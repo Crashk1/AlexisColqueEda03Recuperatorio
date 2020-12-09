@@ -18,7 +18,21 @@ public class FuerzaArmada {
 	private Map<String, Batalla> batallas = new HashMap<String, Batalla>();
 	
 	public void agregarVehiculo(Vehiculo vehiculo) {
+		
+		//Asumiendo que la intencion era que no se pueda repetir codigo.
+		//Si se quisiese incluir 13 vehiculo y dar 12, entonces podria agregar -1 al return de getCapacidadDeDefensa()
+		
+		Boolean codigoYaUtilizado = false;
+		
+		for (Vehiculo i : this.convoy) {
+			if (vehiculo.getCodigo() == i.getCodigo()) {
+				codigoYaUtilizado = true;
+			}
+		}
+		
+		if (!codigoYaUtilizado)
 		convoy.add(vehiculo);
+		
 	}
 	
 	public Integer getCapacidadDeDefensa() {
