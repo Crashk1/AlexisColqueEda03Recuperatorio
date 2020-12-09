@@ -13,6 +13,6 @@ public class Batalla {
 	private Double latitud;
 	private Double longitud;
 	private TipoDeBatalla tipo;
-	Set<Vehiculo> vehiculosEnLaBatalla;
+	private Set<Vehiculo> vehiculosEnLaBatalla = new HashSet<Vehiculo>();
 	
 }
