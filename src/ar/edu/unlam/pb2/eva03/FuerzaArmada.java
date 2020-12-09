@@ -5,6 +5,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import ar.edu.unlam.pb2.eva03.enumeradores.TipoDeBatalla;
+import ar.edu.unlam.pb2.eva03.excepciones.VehiculoIncompatible;
+import ar.edu.unlam.pb2.eva03.excepciones.VehiculoInexistente;
+import ar.edu.unlam.pb2.eva03.interfaces.Acuatico;
+import ar.edu.unlam.pb2.eva03.interfaces.Terrestre;
+import ar.edu.unlam.pb2.eva03.interfaces.Volador;
+
 public class FuerzaArmada {
 
 	private Set<Vehiculo> convoy = new HashSet<Vehiculo>();
@@ -18,7 +25,53 @@ public class FuerzaArmada {
 		return convoy.size();
 	}
 	
+	public void crearBatalla(String nombre, TipoDeBatalla tipo, Double latitud, Double longitud) {	
+		batallas.put(nombre, new Batalla(latitud, longitud, tipo));
+	}
 	
+	public Batalla getBatalla(String nombre) {
+		return batallas.get(nombre);
+	}
+	
+	public boolean enviarALaBatalla(String batalla, Integer codigoVehiculo) throws VehiculoIncompatible, VehiculoInexistente {
+		
+		for (Vehiculo i : convoy) {
+			if (i.getCodigo() == codigoVehiculo) {
+				switch (batallas.get(batalla).getTipo()) {
+				
+				case TERRESTRE:
+					if (i instanceof Terrestre) {
+						batallas.get(batalla).agregarVehiculoParaBatalla(i);
+						return true;
+					}
+					else {
+						throw new VehiculoIncompatible();
+					}
+				
+				case NAVAL:
+					if (i instanceof Acuatico) {
+						batallas.get(batalla).agregarVehiculoParaBatalla(i);
+						return true;
+					}
+					else {
+						throw new VehiculoIncompatible();
+					}
+				
+				case AEREA:
+					if (i instanceof Volador) {
+						batallas.get(batalla).agregarVehiculoParaBatalla(i);
+						return true;
+					}
+					else {
+						throw new VehiculoIncompatible();
+					}
+					
+				}
+			}
+		}
+		
+		throw new VehiculoInexistente();
+	}
 	
 	@Override
 	public int hashCode() {
@@ -49,7 +102,5 @@ public class FuerzaArmada {
 			return false;
 		return true;
 	}
-
-
 
 }
